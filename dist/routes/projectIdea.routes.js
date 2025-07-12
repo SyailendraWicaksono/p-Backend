@@ -1,0 +1,22 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const projectIdea_controller_1 = require("../controllers/projectIdea.controller");
+const validate_1 = require("../middlewares/validate");
+const projectIdea_validation_1 = require("../validations/projectIdea.validation");
+const auth_1 = require("../middlewares/auth");
+const router = express_1.default.Router();
+router.get('/', projectIdea_controller_1.getProjectIdeas);
+router.get('/:id', projectIdea_controller_1.getProjectIdeaById);
+router.post('/', projectIdea_controller_1.createProjectIdea);
+router.put('/:id', projectIdea_controller_1.updateProjectIdea);
+router.delete('/:id', projectIdea_controller_1.deleteProjectIdea);
+router.post('/', (0, validate_1.validate)(projectIdea_validation_1.createProjectIdeaSchema), projectIdea_controller_1.createProjectIdea);
+router.put('/:id', (0, validate_1.validate)(projectIdea_validation_1.updateProjectIdeaSchema), projectIdea_controller_1.updateProjectIdea);
+router.post('/', auth_1.authenticateToken, (0, validate_1.validate)(projectIdea_validation_1.createProjectIdeaSchema), projectIdea_controller_1.createProjectIdea);
+router.put('/:id', auth_1.authenticateToken, (0, validate_1.validate)(projectIdea_validation_1.updateProjectIdeaSchema), projectIdea_controller_1.updateProjectIdea);
+router.delete('/:id', auth_1.authenticateToken, projectIdea_controller_1.deleteProjectIdea);
+exports.default = router;
