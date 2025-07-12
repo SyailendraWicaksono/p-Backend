@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+
+  projectIdeas ProjectIdea[] @relation("AdminIdeas")
+}
+
+model ProjectIdea {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  category    String
+  difficulty  String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  adminId Int
+  admin   Admin @relation("AdminIdeas", fields: [adminId], references: [id])
+}
+
+model Property {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String?
+  price       BigInt
+  imageUrl    String?
+  status      Boolean   @default(true)
+  ownerId     Int
+  deletedAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  username  String?      // tambahkan ini
+  status    String?      // kalau kamu pakai status
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?    // tambahkan ini untuk soft delete
+}
+
