@@ -9,7 +9,10 @@ const app = express();
 
 // ⬇️ Pasang middleware cors dulu sebelum route
 app.use(cors({
-  origin: 'http://localhost:3001', // frontend Next.js
+  origin: [
+    'http://localhost:3001',
+    'https://p-frontend-snowy.vercel.app'
+  ], // frontend Next.js
   credentials: true
 }));
 
